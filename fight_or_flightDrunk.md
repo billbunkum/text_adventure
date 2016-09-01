@@ -22,8 +22,8 @@ While certain ACTIONS are better for certain monsters, the PC is awarded extra P
 4. encounter a monster at each stage
 	- display description of monster
 	- type of monster determines EASY action and HARD action
-		* easy action grants +2 bonus() to player roll
-		* hard action grants +0 to player roll
+		* easy action grants +2 bonus() to player roll and +1 to action_points if win
+		* hard action grants +0 to player roll and +2 to action_points if win
 
 5. player makes an ACTION choice -- player_bid
 
@@ -36,12 +36,16 @@ While certain ACTIONS are better for certain monsters, the PC is awarded extra P
 
 	- rolls based off random number between 0-12
 
-	- //manner of victory
+9. if WIN, determine points
+	- player_points = player_points + action_points
+
+10. if LOSE, display player_points and exit game
+
+11. //manner of victory
 	- determined by number of final points
 		* POOR if 3 points
 		* MEDIOCRE if 5 points
 		* EPIC if 7 points
-
 
 ##What can be done by the player()
 1. FIGHT
@@ -124,13 +128,13 @@ While certain ACTIONS are better for certain monsters, the PC is awarded extra P
 3. monsters (either fight or flight)
 	- cops
 		* description
-		* +2 points for FIGHT
-		* +1 point for FLIGHT (they are unfit to running)
+		* grant +2 action_points for FIGHT
+		* grant +1 action_points for FLIGHT (they are unfit to running)
 
 	- bros
 		* description
-		* +2 points for FLIGHT
-		* +1 point for FIGHT (they respect you for being a fellow bro)
+		* grant +2 action_points for FLIGHT
+		* grant +1 action_points for FIGHT (they respect you for being a fellow bro)
 
 	//- dellusions
 		* description
