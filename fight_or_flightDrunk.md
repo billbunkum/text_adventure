@@ -60,7 +60,8 @@ While certain ACTIONS are better for certain monsters, the PC is awarded extra P
 	- resets current Stage but grants +1 points	
 
 
-###OTHER STUFF -- Under-the-hood
+###OTHER STUFF -- Brainstorming 
+* Under-the-hood
 2. main() -- initializes: 
 	- loads game()
 	- saves/loads saved files
