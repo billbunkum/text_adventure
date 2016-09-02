@@ -28,8 +28,8 @@ While certain ACTIONS are better for certain monsters, the PC is awarded extra P
 5. player makes an ACTION choice -- player_bid
 
 6. player_bid() gets random roll value + bonus()
-
-7. monster_bid() gets random roll value
+7
+. monster_bid() gets random roll value
 	- as bonus() has already been determined, monster_bid() is the same for any monster
 
 8. both values are compared
