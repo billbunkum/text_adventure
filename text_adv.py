@@ -20,7 +20,8 @@ def main(): #checks if new player, loads game()
 	stageCount = 0
 	points = 0
 
-	wannaPlay = input("You wanna play? Press any key for \'Yes' or 0 for \'No'.")
+	print("You wanna play? Press any key for \'Yes' or 0 for \'No'.")
+	wannaPlay = input("> ")
 	if wannaPlay != "0":
 		game(monster, ACTIONS, stageCount, points)
 	else:
