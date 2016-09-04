@@ -8,29 +8,31 @@ need new CLASS for passing all these damn arguments
 """
 
 #not at all flexible right now
-def ERROR_CHECKING(choice):
+def ERROR_CHECKING(monster, choice, bonus):
 	print("\nYou entered \'{}', an invalid option".format(choice))
 	print("\nYou must choose either \'1' or \'0'")
 
-#testing points...should call
-	points = 0
-	choicesActionList(monster, actions, bonus, points)	
+	choicesActionList(monster, choice, bonus)	
 
 class Monster(): #runs calculations
-	def __init__(self, name="baddie", bonus=0):
+	def __init__(self, name="baddie", actions=None, bonus=0, points=0):
 		self.name = name
 		self.monsterName = ""
+		self.actions = None
 		self.bonus = 0
+		self.points = 0
 
 	def generateMonster(self, monster):
 		if monster > 0:
-			self.monsterName = "cops"
+#			self.monsterName = "cops"
 			cops(self)
+			return self.monsterName
 		else:
-			self.monsterName = "bros"
+#			self.monsterName = "bros"
 			bros(self)
+			return self.monsterName
 
-	def modifyMonster(self, choice, actions, stageONE, bonus):
+	def modifyMonster(self, choice, bonus):
 		if choice == "1":
 			print("\nYou chose...to FIGHT!")
 		elif choice == "2":
@@ -38,7 +40,7 @@ class Monster(): #runs calculations
 		
 		else:
 #need to pass enough for choicesActionList(player_choice, actions, monster, bonus)
-			ERROR_CHECKING(choice)
+			ERROR_CHECKING(self, choice, bonus)
 		
 #to do logic
 		if self.monsterName == "bros":
@@ -59,14 +61,14 @@ def bros(monster): #if monster = 0
 	return monster.monsterName
 
 def cops(monster): #if monster = 1
-#	monster.monsterName = "cops"
+	monster.monsterName = "cops"
 	
 	print("\n")
 	description = """A handful of the boys in blue approach. They are swinging their billy clubs like they mean it. One steps between you and where you're stumbling; he holds up his hand and says, 'Good evening, ya doin' alright, son?' Meanwhile, the other cops snicker in the background."""
 	print("\n")
 	print(textwrap.fill(description))
 	
-#	return monster.monsterName
+	return monster.monsterName
 
 #this will calculate rolls for monsters & the player
 def randomRoll(monster, bonus):
@@ -83,13 +85,13 @@ def randomRoll(monster, bonus):
 		return False
 	pass
 
-def choicesActionList(monster, actions, bonus, points):
+def choicesActionList(monster, actions, bonus):
 	print("\n")
 	print("\nYou may choose to either fight or to run away:")
 	for action in actions:
 		print(action)
-	player_choice = input("> Enter a number: ")
-	monster.modifyMonster(player_choice, actions, monster, bonus)
+	choice = input("> Enter a number: ")
+	monster.modifyMonster(choice, bonus)
 
 def describeStage(stageCount, gameOn):
 	if stageCount == 0:
@@ -105,12 +107,12 @@ def describeStage(stageCount, gameOn):
 		print("\nYou found your way home. You pass out and win life.")
 		return gameOn
 
-def gameEnd(gameOn, monster, bonus, actions, points):
+def gameEnd(gameOn, monster, bonus, actions):
 	print("\nYour night has ended. Thanks for playing!")
 	gameOn = False
-	gamePlay(gameOn, monster, bonus, actions, points)
+	gamePlay(gameOn, monster, bonus, actions)
 
-def game(monster, actions, stageCount, points): #runs first from main()
+def game(monster, actions, stageCount): #runs first from main()
 #setting variables...maybe need to be elsewhere eventually
 	bonus = 0
 	gameOn = True
@@ -123,15 +125,15 @@ def game(monster, actions, stageCount, points): #runs first from main()
 	continue1 = input("> ")
 	
 	if continue1 == "0":
-		gameEnd(gameOn, monster, bonus, actions, points)
+		gameEnd(gameOn, monster, bonus, actions)
 	else:
 		describeStage(stageCount, gameOn)
-		gamePlay(gameOn, monster, actions, bonus, points)
+		gamePlay(gameOn, monster, actions, bonus)
 
-def gamePlay(gameOn, monster, actions, bonus, points):
+def gamePlay(gameOn, monster, actions, bonus):
 	if gameOn == True:
 		stageONE = Monster()
 		stageONE.generateMonster(monster)
-		choicesActionList(stageONE, actions, bonus, points)
+		choicesActionList(stageONE, actions, bonus)
 	else:
 		sys.exit

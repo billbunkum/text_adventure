@@ -18,12 +18,12 @@ def main(): #checks if new player, loads game()
 	monster = randint(0,1) 
 	ACTIONS = ( "Press 1 for FIGHT", "Press 2 for FLIGHT", )
 	stageCount = 0
-	points = 0
+#	points = 0
 
 	print("You wanna play? Press any key for \'Yes' or 0 for \'No'.")
 	wannaPlay = input("> ")
 	if wannaPlay != "0":
-		game(monster, ACTIONS, stageCount, points)
+		game(monster, ACTIONS, stageCount)
 	else:
 		print("Thanks, bye.")
 		sys.exit
