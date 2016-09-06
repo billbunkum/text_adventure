@@ -137,14 +137,14 @@ class Calculations():
 		self.monsterName = "baddies"
 
 	def randomRoll(self, monster_type, choice):
-		if (monster_type == 0 and choice == 1):
+		if (monster_type == 0 and choice == "1"):
 			self.bonus = 3
-			print("\nYour bonus is: {}".format(self.bonus))
-		elif (monster_type == 1 and choice == 0):
+			print("\nYour bonus is: +{}".format(self.bonus))
+		elif (monster_type == 1 and choice == "2"):
 			self.bonus = 3
-			print("\nYour bonus is: {}".format(self.bonus))
+			print("\nYour bonus is: +{}".format(self.bonus))
 
-		self.player_bid = randint(1,12) + self.bonus
+		self.player_bid = (randint(1,12) + self.bonus)
 		print("\nYour roll was: {}".format(self.player_bid))
 
 		self.monster_bid = randint(1,12)
@@ -155,13 +155,16 @@ class Calculations():
 	def compareBids(self, player_bid, monster_bid):
 		if player_bid > monster_bid:
 			print("You beat them!")
+			x = input("Press any key to continue...")
 			return True
 		elif self.player_bid == self.monster_bid:
 			print("You lucky bastard. The round continues. Choose again!")
+			y = input("The suspense is killing us...")
 			choicesList()
 
 		else:
-			print("\nOh no! They beat YOU!")	
+			print("\nOh no! They beat YOU!")
+			z = input("Your ancestors are weeping...press any key to Exit.")	
 # need to pass stage (instance of Display) to call stage.monstersWin()
 			gameOn = False
 			return gameOn
@@ -250,5 +253,5 @@ def gamePlay(gameOn, stageCount):
 			print("\nYou passed {} stages".format(stageCount))
 			break
 
-	print("\n!!!!stageCount is: {}!!!!".format(stageCount)) #for testing
+#	print("\n!!!!stageCount is: {}!!!!".format(stageCount)) #for testing
 
