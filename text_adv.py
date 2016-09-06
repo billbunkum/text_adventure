@@ -15,7 +15,7 @@ WELCOME_SPLASH = ("""You raise your head from the bar-top; the world is swimming
 ACTIONS = ( "1: fight", "2: flight", "3: save", )
 
 def main(): #checks if new player, loads game()
-	monster = randint(0,1) 
+	monster_type = randint(0,1) 
 	ACTIONS = ( "Press 1 for FIGHT", "Press 2 for FLIGHT", )
 	stageCount = 0
 #	points = 0
@@ -23,7 +23,8 @@ def main(): #checks if new player, loads game()
 	print("You wanna play? Press any key for \'Yes' or 0 for \'No'.")
 	wannaPlay = input("> ")
 	if wannaPlay != "0":
-		game(monster, ACTIONS, stageCount)
+#STEP 1
+		game(monster_type, stageCount, ACTIONS)
 	else:
 		print("Thanks, bye.")
 		sys.exit

@@ -3,46 +3,96 @@ import textwrap
 from text_adv import *
 
 """
-need ERROR_CHECKING()
-need new CLASS for passing all these damn arguments
+TO-FIX:
+	
+	**. text_adv.py > game(monster_type, stageCount, ACTIONS) is not actually working how I thought it would...what is going on with these arguments?
+	1. stageCount is doing something WEIRD...i'm misunderstanding how passing variables works
+	2. setting CLASS variables/arguments is weird; what is it doing when you 'self.gameOn = True w/in def __init__' vs 'gameOn=True as an arg'?
+	3. why is gameEnd printing multiple times?
+	4. points
+	5. Need 'save' button / 'return player'
+	6. Restructure - Need new CLASS for passing all these damn arguments
+
+**	Add monsterCounter(), tallies up who you've FOUGHT and FLED from and prints it out.
+
+** How does program continue with Return True/False from a function call?
 """
 
 #not at all flexible right now
-def ERROR_CHECKING(monster, choice, bonus):
+def ERROR_CHECKING(monster, monster_type, stageCount, choice, actions, bonus):
 	print("\nYou entered \'{}', an invalid option".format(choice))
-	print("\nYou must choose either \'1' or \'0'")
-
-	choicesActionList(monster, choice, bonus)	
+	#print("\nYou must choose either \'1' or \'0'")
+	choicesActionList(monster, stageCount, monster_type, actions, bonus)	
 
 class Monster(): #runs calculations
-	def __init__(self, name="baddie", actions=None, bonus=0, points=0):
+	def __init__(self, name="baddie", monsterName="The baddie", actions=None, bonus=0, monster_type=None, gameOn=True, stageCount=0):
 		self.name = name
+		self.gameOn = True
 		self.monsterName = ""
-		self.actions = None
-		self.bonus = 0
-		self.points = 0
+		self.stageCount = 0
+#		self.actions = None
+#		self.bonus = 0
+#		self.points = 0
+#		self.player_bid = 0
+#		self.monster_bid = 0
+#		self.monster_type = None
 
-	def generateMonster(self, monster):
-		if monster > 0:
-#			self.monsterName = "cops"
+	def randomRoll(self, choice, monster_type, stageCount, actions, bonus):
+		self.player_bid = randint(1,12) + bonus
+		print("\nYour roll was: {}".format(self.player_bid))
+		self.monster_bid = randint(1,12)
+		print("\nThe {}' roll was: {}".format(self.monsterName,self.monster_bid))
+
+		if self.player_bid > self.monster_bid:
+			print("You beat them!")
+			self.gameOn = True
+			return self.gameOn
+		elif self.player_bid == self.monster_bid:
+			print("You lucky bastard. The round continues. Choose again!")
+			choicesActionList(self, stageCount, monster_type, actions, bonus)
+		else:
+			print("They beat you!")
+			self.gameOn = False
+#			health -= 1
+#			return self.gameOn
+			gameEnd(self.gameOn, self, stageCount, actions, bonus)
+
+#STEP 5
+#really only set the monsterName...also, use to set Bonus or Points??
+	def generateMonster(self, monster_type):
+		if monster_type > 0:
 			cops(self)
 			return self.monsterName
 		else:
-#			self.monsterName = "bros"
 			bros(self)
 			return self.monsterName
 
-	def modifyMonster(self, choice, bonus):
+#STEP 8
+	def modifyMonster(self, choice, stageCount, monster_type, actions, bonus):
 		if choice == "1":
 			print("\nYou chose...to FIGHT!")
-		elif choice == "2":
+			self.randomRoll(choice, monster_type, stageCount, actions, bonus)
+			if self.gameOn:
+#				reset bonus for next round
+				bonus = 0
+
+				gamePlay(self.gameOn, stageCount, monster_type, actions, bonus)
+			else:
+				gameEnd(self.gameOn, stageCount, monster_type, actions, bonus)
+		elif choice == "2":			
 			print("\nYou chose...to FLEE!")
-		
+			self.randomRoll(choice, stageCount, monster_type, actions, bonus)
+			if self.gameOn:
+#				reset bonus for next round
+				bonus = 0
+
+				gamePlay(self.gameOn, stageCount, monster_type, actions, bonus)
+			else:
+				gameEnd(self.gameOn, stageCount, monster_type, actions, bonus)
 		else:
-#need to pass enough for choicesActionList(player_choice, actions, monster, bonus)
-			ERROR_CHECKING(self, choice, bonus)
+			ERROR_CHECKING(self, choice, stageCount, monster_type, actions, bonus)
 		
-#to do logic
+#		to do logic
 		if self.monsterName == "bros":
 			bonus = 0
 			pass
@@ -52,7 +102,7 @@ class Monster(): #runs calculations
 
 def bros(monster): #if monster = 0
 	monster.monsterName = "bros"
-	
+
 	print("\n")
 	description = """A bottle of foul smelling liquor explodes just feet in front of you; green shards of glass scatter every where. Snickering emminates from a tree branch high above you; as you crane your neck in that direction, you see a tall, athletic youth swinging from the branch; a weird symbol is emblazened on his pink sweater. Is it Greek? The bro drops down to the pavement in front of you blocking your path. 'Where do ya think *hic-cup yer goin', pussy?'"""
 	print("\n")
@@ -70,52 +120,45 @@ def cops(monster): #if monster = 1
 	
 	return monster.monsterName
 
-#this will calculate rolls for monsters & the player
-def randomRoll(monster, bonus):
-	player_bid = randint(1,12)
-	monster_bid = randint(1,12)
-
-	if player_bid > monster_bid:
-		return True
-	elif player_bid == monster_bid:
-		print("You lucky bastard. The round continues. Choose again!")
-#need arguments for choiceActionList()
-		choicesActionList()
-	else:
-		return False
-	pass
-
-def choicesActionList(monster, actions, bonus):
+#STEP 7
+def choicesActionList(stageONE, stageCount, monster_type, actions, bonus):
 	print("\n")
 	print("\nYou may choose to either fight or to run away:")
-	for action in actions:
-		print(action)
+	print("\nPress 0 to sit down and give up.")
+	for act in actions:
+		print(act)
 	choice = input("> Enter a number: ")
-	monster.modifyMonster(choice, bonus)
+	if choice == "0":
+		gameOn = False
+		gameEnd(gameOn, stageONE, stageCount, actions, bonus)
+	else:
+		stageONE.modifyMonster(choice, stageCount, monster_type, actions, bonus)
 
+#STEP 3
 def describeStage(stageCount, gameOn):
 	if stageCount == 0:
 		print("\nDrunken fluids swirl in your bowels as you exit the bar.")
 		print("The lonely street calls to you...")
 		print("You begin stumbling forward in the chilly street light.")
 	elif stageCount == 1:
-		pass
+		print("\nReady for stage TWO?!")
 	elif stageCount == 2:
-		pass
-	else: #Win Condition
+		print("\nReady for stage THREE?!")
+	elif stageCount == 3: 
 		gameOn = False
-		print("\nYou found your way home. You pass out and win life.")
+		print("\nYou found your way home! You pass out and WIN life, forever.")
 		return gameOn
 
-def gameEnd(gameOn, monster, bonus, actions):
-	print("\nYour night has ended. Thanks for playing!")
+def gameEnd(gameOn, stageCount, monster_type, actions, bonus):
 	gameOn = False
-	gamePlay(gameOn, monster, bonus, actions)
+	gamePlay(gameOn, stageCount, monster_type, bonus, actions)
 
-def game(monster, actions, stageCount): #runs first from main()
+#STEP 2
+def game(monster_type, actions): #runs first from main()
 #setting variables...maybe need to be elsewhere eventually
 	bonus = 0
 	gameOn = True
+	stageCount = 0
 
 	print("\n", textwrap.fill(WELCOME_SPLASH, width=50))
 	#continue1 = ""
@@ -125,15 +168,25 @@ def game(monster, actions, stageCount): #runs first from main()
 	continue1 = input("> ")
 	
 	if continue1 == "0":
-		gameEnd(gameOn, monster, bonus, actions)
+		gameEnd(gameOn, stageCount, monster_type, actions, bonus)
 	else:
 		describeStage(stageCount, gameOn)
-		gamePlay(gameOn, monster, actions, bonus)
+		gamePlay(gameOn, stageCount, monster_type, actions, bonus)
 
-def gamePlay(gameOn, monster, actions, bonus):
+#STEP 4 & STEP 6
+def gamePlay(gameOn, stageCount, monster_type, actions, bonus):
 	if gameOn == True:
-		stageONE = Monster()
-		stageONE.generateMonster(monster)
-		choicesActionList(stageONE, actions, bonus)
+		monster_type = randint(0,1) #re-determine monster_type
+		describeStage(stageCount, gameOn)
+##
+# How to actually utilize a 'return gameOn'...cos it ain't workin'
+		stageCount += 1
 	else:
-		sys.exit
+		print("\nYour night has ended. Thanks for playing!")
+	if stageCount < 3:
+		stageONE = Monster()
+		stageONE.generateMonster(monster_type)
+
+		choicesActionList(stageONE, stageCount, monster_type, actions, bonus)
+##
+#what does this actually do?
