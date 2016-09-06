@@ -25,11 +25,8 @@ def ERROR_CHECKING(monster, monster_type, stageCount, choice, actions, bonus):
 	choicesActionList(monster, stageCount, monster_type, actions, bonus)	
 
 class Monster(): #runs calculations
-	def __init__(self, name="baddie", monsterName="The baddie", actions=None, bonus=0, monster_type=None, gameOn=True, stageCount=0):
-		self.name = name
-		self.gameOn = True
-		self.monsterName = ""
-		self.stageCount = 0
+	def __init__(self, monsterName="The baddie"):
+		self.monsterName = "The baddie"
 #		self.actions = None
 #		self.bonus = 0
 #		self.points = 0
@@ -51,11 +48,19 @@ class Monster(): #runs calculations
 			print("You lucky bastard. The round continues. Choose again!")
 			choicesActionList(self, stageCount, monster_type, actions, bonus)
 		else:
-			print("They beat you!")
 			self.gameOn = False
 #			health -= 1
 #			return self.gameOn
+			print("\nOh no! They beat YOU!")
+			print("\n")
+			print("▒█▀▄▀█ █▀▀█ █▀▀▄ █▀▀ ▀▀█▀▀ █▀▀ █▀▀█ █▀▀")
+			print("▒█▒█▒█ █░░█ █░░█ ▀▀█ ░░█░░ █▀▀ █▄▄▀ ▀▀█")
+			print("▒█░░▒█ ▀▀▀▀ ▀░░▀ ▀▀▀ ░░▀░░ ▀▀▀ ▀░▀▀ ▀▀▀")
+			print("			▒█░░▒█ ▀█▀ ▒█▄░▒█")
+			print("			▒█▒█▒█ ▒█░ ▒█▒█▒█")
+			print("			▒█▄▀▄█ ▄█▄ ▒█░░▀█")
 			gameEnd(self.gameOn, self, stageCount, actions, bonus)
+
 
 #STEP 5
 #really only set the monsterName...also, use to set Bonus or Points??
@@ -130,44 +135,52 @@ def choicesActionList(stageONE, stageCount, monster_type, actions, bonus):
 	choice = input("> Enter a number: ")
 	if choice == "0":
 		gameOn = False
-		gameEnd(gameOn, stageONE, stageCount, actions, bonus)
+		gameEnd(gameOn, stageCount, monster_type, actions, bonus)
 	else:
 		stageONE.modifyMonster(choice, stageCount, monster_type, actions, bonus)
 
 #STEP 3
 def describeStage(stageCount, gameOn):
 	if stageCount == 0:
+		stageCount += 1
 		print("\nDrunken fluids swirl in your bowels as you exit the bar.")
 		print("The lonely street calls to you...")
 		print("You begin stumbling forward in the chilly street light.")
+		return (stageCount, gameOn)
 	elif stageCount == 1:
+		stageCount += 1
 		print("\nReady for stage TWO?!")
+		return (stageCount, gameOn)
 	elif stageCount == 2:
+		stageCount += 1
 		print("\nReady for stage THREE?!")
-	elif stageCount == 3: 
+		return (stageCount, gameOn)
+	else: 
+		stageCount += 1
 		gameOn = False
 		print("\nYou found your way home! You pass out and WIN life, forever.")
-		return gameOn
+		return (stageCount, gameOn)
 
 def gameEnd(gameOn, stageCount, monster_type, actions, bonus):
 	gameOn = False
-	gamePlay(gameOn, stageCount, monster_type, bonus, actions)
+	gamePlay(gameOn, stageCount, monster_type, actions, bonus)
 
 #STEP 2
-def game(monster_type, actions): #runs first from main()
+def game(actions): #runs first from main()
 #setting variables...maybe need to be elsewhere eventually
 	bonus = 0
 	gameOn = True
 	stageCount = 0
+	monster_type = None
 
 	print("\n", textwrap.fill(WELCOME_SPLASH, width=50))
 	#continue1 = ""
 	print("\nPress any key to: Start making your way home.") 
 	print("...OR...")
 	print("Press \'0' to: Lay down on the sidewalk and let the night take you...out of the game.")
-	continue1 = input("> ")
+	continueOption = input("> ")
 	
-	if continue1 == "0":
+	if continueOption == "0":
 		gameEnd(gameOn, stageCount, monster_type, actions, bonus)
 	else:
 		describeStage(stageCount, gameOn)
@@ -176,13 +189,16 @@ def game(monster_type, actions): #runs first from main()
 #STEP 4 & STEP 6
 def gamePlay(gameOn, stageCount, monster_type, actions, bonus):
 	if gameOn == True:
-		monster_type = randint(0,1) #re-determine monster_type
+		monster_type = randint(0,1) #redetermines monster_type
 		describeStage(stageCount, gameOn)
 ##
 # How to actually utilize a 'return gameOn'...cos it ain't workin'
-		stageCount += 1
 	else:
 		print("\nYour night has ended. Thanks for playing!")
+		print("\nYou passed {} stages".format(stageCount))
+
+	print("\nstageCount is: {}".format(stageCount)) #for testing
+
 	if stageCount < 3:
 		stageONE = Monster()
 		stageONE.generateMonster(monster_type)
