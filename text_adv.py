@@ -24,7 +24,7 @@ def main(): #checks if new player, loads game()
 	wannaPlay = input("> ")
 	if wannaPlay != "0":
 #STEP 1
-		game(monster_type, stageCount, ACTIONS)
+		game(monster_type, ACTIONS)
 	else:
 		print("Thanks, bye.")
 		sys.exit
