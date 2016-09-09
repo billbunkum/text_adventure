@@ -1,5 +1,6 @@
 import sys
 import textwrap
+import time
 from drunkQuest import *
 
 """
@@ -51,10 +52,14 @@ class DisplayGoodness():
 	def stage_display(self, stageCount):	
 		if stageCount == 0:
 			stageCount += 1
-			y = input("\nRemember...You lose if you lose an encounter.")
-			x = input("Prepare for STAGE ONE...")
+			print("\nRemember...You 'lose the game' if you lose an encounter.")
+			time.sleep(2)
+			print("Prepare for STAGE ONE...")
+			time.sleep(2)
 			print("\nDrunken fluids swirl in your bowels as you exit the bar.")
+			time.sleep(1)
 			print("The lonely street calls to you...")
+			time.sleep(1)
 			print("You begin stumbling forward in the chilly street light.")
 
 			return (stageCount, self.gameOn)
@@ -92,9 +97,16 @@ class Monster():
 	def bros(self): #if monster = 0
 		self.monsterName = "bros"
 
-		print("\n")
+		print("*"*10)
+		time.sleep(2)
+		print("\nA bro of the night...a 'night bro?' you find yourself thinking,") 
+		print("the thought almost makes you laugh but you begin coughing")
+		print("as you choke back some vomit...")
+		print("*"*10)
+		time.sleep(2)
 		description1 = """\nA bottle of foul smelling liquor explodes just feet in front of you; green shards of glass scatter every where. Snickering emminates from a tree branch high above you; as you crane your neck in that direction, you see a tall, athletic youth swinging from the branch; a weird symbol is emblazened on his pink sweater."""
 		description2 = """\nIs it Greek? The bro drops down to the pavement in front of you blocking your path. 'Where do ya think *hic-cup yer goin', pussy?'"""
+		x = input("Press any key to deal with the bros...")
 		print("\n")
 		print(textwrap.fill(description1))
 		print(textwrap.fill(description2))
@@ -104,8 +116,16 @@ class Monster():
 	def cops(self): #if monster = 1
 		self.monsterName = "cops"
 		
-		print("\n")
+		print("*"*10)
+		time.sleep(2)
+		print("\nCops...'Oh great', you mutter as you gauge the situation...")
+		print("*"*10)
+		time.sleep(2)
+		print("\nAs you turn your head, the world swims in front of you...")
+		print("you stop gauging the situation just as quickly...")
+		time.sleep(1)
 		description = """A handful of the boys in blue approach. They are swinging their billy clubs like they mean it. One steps between you and where you're stumbling; he holds up his hand and says, 'Good evening, ya doin' alright, son?' Meanwhile, the other cops snicker in the background."""
+		x = input("Press any key to deal with the cops...")
 		print("\n")
 		print(textwrap.fill(description))
 		
@@ -233,13 +253,19 @@ def gamePlay(gameOn, stageCount):
 				gameOn = calcs.compareBids(player_bid, monster_bid)
 
 			if stageCount == 3:
+				time.sleep(2)
+				print("*"*10)
 				print("\nYou found your way home! You pass out and WIN life, forever.")
 				print("Thanks for playing.")
 
 		else:
+			time.sleep(1)
+			print("*"*10)
 			print("\nYour night has ended. Thanks for playing!")
 			print("\nYou passed {} stages".format((stageCount)))
+#doesn't actually exit the game yet
 			break
 
+	time.sleep(1)
 	print("\n!!!!You passed {} STAGES!!!!".format(stageCount))
 
