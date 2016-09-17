@@ -1,6 +1,5 @@
 import sys
 import os
-from random import randint
 from gameFile import *
 """
 a text-based choose-your-own-adventure
@@ -14,8 +13,8 @@ def main():
 	print("\nYou wanna play? Press any key for \'Yes' or 0 for \'No'.")
 	wannaPlay = input("> ")
 	if wannaPlay != "0":
-#STEP 1
-		game()
+		game = RunTheGame()
+		game.game()
 	else:
 		print("Thanks, bye.")
 		sys.exit
